@@ -20,7 +20,7 @@ public class Person {
     public Person() {
     }
 
-    public Person(final long id, final String name, final int age) {
+    public Person(final String name, final int age) {
         this.name = name;
         this.age = age;
     }

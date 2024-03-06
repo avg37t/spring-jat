@@ -42,6 +42,6 @@ public class PersonController implements PersonAPI {
     @Override
     public ResponseEntity<Person> delete(final int id) {
         service.delete(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();//TODO resilence 4 (limits)
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

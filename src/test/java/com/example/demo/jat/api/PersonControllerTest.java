@@ -33,64 +33,64 @@ class PersonControllerTest {
     @Mock
     private Service service;
 
-//    @BeforeEach
-//    void setUp() {
-//        personController = new PersonController(service);
-//        mockPersons = new HashMap<>();
-//        mockPersons.put(1, new Person(NAME, AGE));
-//    }
+    @BeforeEach
+    void setUp() {
+        personController = new PersonController(service);
+        mockPersons = new HashMap<>();
+        mockPersons.put(1, new Person(NAME, AGE));
+    }
+
+    @Test
+    void get_positive() {
+        Person person = new Person(NAME, AGE);
+        when(service.get(anyInt())).thenReturn(Optional.of(person));
+
+        ResponseEntity<Person> response = personController.get(1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(person, response.getBody());
+    }
+
+    @Test
+    void get_not_found() {
+        when(service.get(anyInt())).thenReturn(Optional.empty());
+
+        ResponseEntity<Person> response = personController.get(1);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void create() {
+        Person person = new Person(NAME, AGE);
+        when(service.create(any())).thenReturn(person);
+
+        ResponseEntity<Person> response = personController.create(person);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(NAME, Objects.requireNonNull(response.getBody()).getName());
+        assertEquals(AGE, Objects.requireNonNull(response.getBody()).getAge());
+    }
+
+    @Test
+    void update() {
+        Person person = new Person(NAME, AGE);
+//        when(service.update(anyInt(), any())).thenReturn(Optional.of(person));
 //
-//    @Test
-//    void get_positive() {
-//        Person person = new Person(NAME, AGE);
-//        when(service.get(anyInt())).thenReturn(Optional.of(person));
-//
-//        ResponseEntity<Person> response = personController.get(1);
+//        ResponseEntity<Person> response = personController.update(1, person);
 //
 //        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        assertEquals(person, response.getBody());
-//    }
-//
-//    @Test
-//    void get_not_found() {
-//        when(service.get(anyInt())).thenReturn(Optional.empty());
-//
-//        ResponseEntity<Person> response = personController.get(1);
-//
-//        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-//    }
-//
-//    @Test
-//    void create() {
-//        Person person = new Person(NAME, AGE);
-//        when(service.create(any())).thenReturn(person);
-//
-//        ResponseEntity<Person> response = personController.create(person);
-//
-//        assertEquals(HttpStatus.CREATED, response.getStatusCode());
 //        assertEquals(NAME, Objects.requireNonNull(response.getBody()).getName());
 //        assertEquals(AGE, Objects.requireNonNull(response.getBody()).getAge());
-//    }
-//
-//    @Test
-//    void update() {
-//        Person person = new Person(NAME, AGE);
-////        when(service.update(anyInt(), any())).thenReturn(Optional.of(person));
-////
-////        ResponseEntity<Person> response = personController.update(1, person);
-////
-////        assertEquals(HttpStatus.OK, response.getStatusCode());
-////        assertEquals(NAME, Objects.requireNonNull(response.getBody()).getName());
-////        assertEquals(AGE, Objects.requireNonNull(response.getBody()).getAge());
-//    }
-//
-//    @Test
-//    void delete() {
-//        doNothing().when(service).delete(anyInt());
-//
-//        ResponseEntity<Person> response = personController.delete(1);
-//
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        verify(service).delete(anyInt());
-//    }
+    }
+
+    @Test
+    void delete() {
+        doNothing().when(service).delete(anyInt());
+
+        ResponseEntity<Person> response = personController.delete(1);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        verify(service).delete(anyInt());
+    }
 }
