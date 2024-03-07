@@ -1,5 +1,6 @@
 package com.example.demo.jat.service;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PersonMathServiceImpl implements PersonMathService {
 
+    private static final String DECIMAL_FORMATTER = "#0.00";
+
     @Override
     public long countPersonsNameStartsWithLetter(final char firstLetter, final Collection<Person> persons) {
         return Optional.ofNullable(persons)
@@ -32,14 +35,16 @@ public class PersonMathServiceImpl implements PersonMathService {
     }
 
     @Override
-    public double calculateAverageAge(final Collection<Person> persons) {
-        return Optional.ofNullable(persons)
+    public String calculateAverageAge(final Collection<Person> persons) {
+        var averageAge = Optional.ofNullable(persons)
                 .map(collection -> collection.stream()
                         .filter(Objects::nonNull)
                         .mapToInt(Person::getAge)
                         .average()
                         .orElse(0.0))
                 .orElse(0.0);
+        DecimalFormat df = new DecimalFormat(DECIMAL_FORMATTER);
+        return df.format(averageAge);
     }
 
     public Set<Long> findMissingIds(final Collection<Person> persons) {
@@ -60,5 +65,6 @@ public class PersonMathServiceImpl implements PersonMathService {
         allIdsInRange.removeAll(existingIds);
 
         return allIdsInRange;
+        //TODO security
     }
 }

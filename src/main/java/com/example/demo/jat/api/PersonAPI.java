@@ -25,5 +25,5 @@ public interface PersonAPI {
     ResponseEntity<Person> update(@PathVariable @Min(value = 0, message = "Number must be non-negative") int id, @RequestBody @NonNull Person person);
 
     @DeleteMapping("/{id}")
-    ResponseEntity<Person> delete(@PathVariable @Min(value = 0, message = "Number must be non-negative") int id);
+    ResponseEntity<Void> delete(@PathVariable @Min(value = 0, message = "Number must be non-negative") int id);
 }

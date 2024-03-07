@@ -1,41 +1,19 @@
 package com.example.demo.jat.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.jat.dto.Person;
-import com.example.demo.jat.repository.PersonRepo;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-@org.springframework.stereotype.Service
-public class PersonService implements Service {
+public interface PersonService {
 
-    private final PersonRepo personRepo;
+    Person create(Person person);
 
-    @Override
-    public Person create(Person person) {
-        return personRepo.save(person);
-    }
+    Optional<Person> get(int id);
 
-    @Override
-    public Optional<Person> get(final int id) {
-        return Optional.ofNullable(personRepo.findById(id));
-    }
+    List<Person> getAll();
 
-    @Override
-    public Person update(final int id, Person person) {
-        Person personOld = personRepo.findById(id);
-        if (person.getName() != null) {
-            personOld.setName(person.getName());
-        }
-        if (person.getAge() >= 0) {
-            personOld.setAge(person.getAge());
-        }
-        return personRepo.save(personOld);
-    }
+    Optional<Person> update(int id, Person person);
 
-    @Override
-    public void delete(final int id) {
-        personRepo.deleteById((long) id);
-    }
+    void delete(int id);
 }
